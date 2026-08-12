@@ -1,0 +1,24 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build APK with Official Kivy Action
+        uses: kivy/buildozer-action@v1.2.4
+        with:
+          buildozer_version: master
+          command: buildozer -v android debug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BusApp-APK
+          path: bin/*.apk
