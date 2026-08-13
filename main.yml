@@ -38,12 +38,17 @@ jobs:
           pip install "cython==0.29.33"
           pip install buildozer
 
-      - name: Prepare Android SDK for Buildozer
+      - name: Prepare Android SDK and SDKManager for Buildozer
         run: |
           mkdir -p ~/.buildozer/android/platform/android-sdk
           cp -r /usr/local/lib/android/sdk/build-tools ~/.buildozer/android/platform/android-sdk/
           cp -r /usr/local/lib/android/sdk/platforms ~/.buildozer/android/platform/android-sdk/
           cp -r /usr/local/lib/android/sdk/platform-tools ~/.buildozer/android/platform/android-sdk/
+          cp -r /usr/local/lib/android/sdk/cmdline-tools ~/.buildozer/android/platform/android-sdk/
+          
+          # ربط مسار sdkmanager بالمسار الذي يبحث عنه buildozer
+          mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+          ln -sf /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
 
       - name: Build APK
         env:
