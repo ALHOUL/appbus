@@ -11,9 +11,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Set workspace permissions for non-root user
+        run: |
+          sudo chown -R 1000:1000 ${{ github.workspace }}
+
       - name: Build APK with Official Buildozer Docker
         run: |
-          docker run --rm -i -v ${{ github.workspace }}:/home/user/hostpython kivy/buildozer bash -c "echo y | buildozer -v android debug"
+          docker run --rm -u 1000:1000 -v ${{ github.workspace }}:/home/user/hostpython kivy/buildozer buildozer -v android debug
 
       - name: Upload APK Artifact
         if: always()
