@@ -38,14 +38,15 @@ jobs:
           pip install "cython==0.29.33"
           pip install buildozer
 
-      - name: Accept Android SDK Licenses
+      - name: Prepare Android SDK for Buildozer
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          mkdir -p ~/.buildozer/android/platform/android-sdk
+          cp -r /usr/local/lib/android/sdk/build-tools ~/.buildozer/android/platform/android-sdk/
+          cp -r /usr/local/lib/android/sdk/platforms ~/.buildozer/android/platform/android-sdk/
+          cp -r /usr/local/lib/android/sdk/platform-tools ~/.buildozer/android/platform/android-sdk/
 
       - name: Build APK
         env:
-          ANDROID_HOME: /usr/local/lib/android/sdk
-          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
           APP_ANDROID_ACCEPT_SDK_LICENSE: '1'
         run: |
           buildozer -v android debug
@@ -56,4 +57,3 @@ jobs:
         with:
           name: BusApp-APK
           path: bin/*.apk
-         
