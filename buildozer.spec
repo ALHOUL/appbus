@@ -69,7 +69,7 @@ orientation = portrait
 
 #
 # OSX Specific
-#
+#android.build_tools_version = 33.0.2
 
 #
 # author = © Copyright Info
